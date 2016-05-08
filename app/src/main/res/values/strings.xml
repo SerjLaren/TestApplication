@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TestApplication</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="actionSettings">Settings</string>
+    <string name="chooseAct">Выберите экран:</string>
+    <string name="secondsRestart">Рестарт</string>
+    <string name="gotoAct">Перейти</string>
+    <string name="title_activity_stopwatch">Stopwatch</string>
+    <string name="minutsStr">Минут:&#160;</string>
+</resources>

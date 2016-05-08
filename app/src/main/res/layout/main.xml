@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/mainAct"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chooseAct"
+        android:textSize="25sp"/>
+    <Spinner
+        android:id="@+id/spinnerAct"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+    </Spinner>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:text="@string/gotoAct"
+        android:textSize="25sp"
+        android:id="@+id/btnGotoAct">
+    </Button>
+</LinearLayout>

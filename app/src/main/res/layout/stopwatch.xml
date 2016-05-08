@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/textviewMinuts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:padding="0dp"
+        android:paddingTop="0dp"
+        android:layout_gravity="center"
+        android:scrollHorizontally="true"
+        android:singleLine="false"
+        android:text="@string/minutsStr"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textviewSeconds"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold"
+        android:singleLine="false"
+        android:lines="1"
+        android:shadowColor="#0000ff"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="7"
+        android:scrollHorizontally="true"
+        android:text="@string/hello_world" />
+</LinearLayout>
