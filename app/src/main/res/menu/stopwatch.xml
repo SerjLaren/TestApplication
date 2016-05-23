@@ -3,14 +3,6 @@
     tools:context="com.example.TeasApplication.StopwatchActivity" >
 
     <item
-        android:id="@+id/secondsRestart"
-        android:orderInCategory="100"
-        android:title="@string/secondsRestart"/>
-    <item
-        android:id="@+id/secondsStop"
-        android:orderInCategory="100"
-        android:title="@string/secondsStop"/>
-    <item
         android:id="@+id/secondsSettings"
         android:orderInCategory="100"
         android:title="@string/secondsSettings"/>

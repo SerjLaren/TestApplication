@@ -1,4 +1,4 @@
-package com.example.testapplication;
+package com.example.testapplication.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.example.testapplication.R;
+import com.example.testapplication.Classes.TimerService;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String[] dataSpinner = {"Секундомер", "другое...", "другое..."};
     public String actCHosen = "";
     private int positionInSpinner;
 
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
+        String[] dataSpinner = {getString(R.string.step1), getString(R.string.step2), getString(R.string.step3)};
         Button btnGotoAct = (Button) findViewById(R.id.btnGotoAct);
         btnGotoAct.setOnClickListener(this);
         ArrayAdapter<String> arrAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dataSpinner);
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, TimerService.class));
+        //stopService(new Intent(this, TimerService.class));
     }
 
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    tools:context="com.example.testapplication.Fragments.FragmentSeconds">
+
+    <TextView
+        android:id="@+id/textviewMinutsFR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:padding="0dp"
+        android:paddingTop="0dp"
+        android:layout_gravity="center"
+        android:scrollHorizontally="true"
+        android:singleLine="false"
+        android:textColor="#000000"
+        android:text="@string/minutsStr"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textviewSecondsFR"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold"
+        android:singleLine="false"
+        android:lines="1"
+        android:textColor="#000000"
+        android:scrollHorizontally="true"
+        android:text="0"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        tools:context="com.example.testapplication.Fragments.FragmentSeconds">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="@string/secondsStart"
+        android:textSize="25sp"
+        android:id="@+id/btnStart"
+        android:gravity="bottom"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:theme="@style/MyFragButton">
+    </Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="@string/secondsStop"
+        android:textSize="25sp"
+        android:id="@+id/btnStop"
+        android:gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:theme="@style/MyFragButton">
+    </Button>
+
+</LinearLayout>
+
+</LinearLayout>

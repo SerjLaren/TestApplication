@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -20,7 +25,8 @@
         android:layout_marginBottom="5dp"
         android:text="@string/bckColor1"
         android:textSize="25sp"
-        android:id="@+id/btnColor1">
+        android:id="@+id/btnColor1"
+        android:theme="@style/MyFragButton">
     </Button>
     <Button
         android:layout_width="fill_parent"
@@ -28,6 +34,7 @@
         android:layout_marginBottom="5dp"
         android:text="@string/bckColor2"
         android:textSize="25sp"
+        android:theme="@style/MyFragButton"
         android:id="@+id/btnColor2">
     </Button>
     <Button
@@ -63,3 +70,4 @@
         android:id="@+id/btnColor6">
     </Button>
 </LinearLayout>
+</ScrollView>

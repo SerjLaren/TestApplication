@@ -1,4 +1,4 @@
-package com.example.testapplication;
+package com.example.testapplication.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,18 +10,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.testapplication.R;
+
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btnColor1, btnColor2, btnColor3, btnColor4, btnColor5, btnColor6;
     private String color1, color2, color3, color4, color5, color6;
-    private String colorSelected, COLOR_SELECTED;
+    private final static String COLOR_SELECTED = "colorSelected";
     public Intent returnIntent = new Intent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-        COLOR_SELECTED = getString(R.string.COLOR_SELECTED);
         color1 = getString(R.string.color1);
         color2 = getString(R.string.color2);
         color3 = getString(R.string.color3);
@@ -53,38 +54,32 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnColor1:
-                colorSelected = color1;
-                returnIntent.putExtra(COLOR_SELECTED, colorSelected);
+                returnIntent.putExtra(COLOR_SELECTED, color1);
                 setResult(RESULT_OK, returnIntent);
                 finish();
                 break;
             case R.id.btnColor2:
-                colorSelected = color2;
-                returnIntent.putExtra(COLOR_SELECTED, colorSelected);
+                returnIntent.putExtra(COLOR_SELECTED, color2);
                 setResult(RESULT_OK, returnIntent);
                 finish();
                 break;
             case R.id.btnColor3:
-                colorSelected = color3;
-                returnIntent.putExtra(COLOR_SELECTED, colorSelected);
+                returnIntent.putExtra(COLOR_SELECTED, color3);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 break;
             case R.id.btnColor4:
-                colorSelected = color4;
-                returnIntent.putExtra(COLOR_SELECTED, colorSelected);
+                returnIntent.putExtra(COLOR_SELECTED, color4);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 break;
             case R.id.btnColor5:
-                colorSelected = color5;
-                returnIntent.putExtra(COLOR_SELECTED, colorSelected);
+                returnIntent.putExtra(COLOR_SELECTED, color5);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 break;
             case R.id.btnColor6:
-                colorSelected = color6;
-                returnIntent.putExtra(COLOR_SELECTED, colorSelected);
+                returnIntent.putExtra(COLOR_SELECTED, color6);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 break;

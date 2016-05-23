@@ -1,54 +1,44 @@
-package com.example.testapplication;
+package com.example.testapplication.Activities;
 
 import android.animation.ValueAnimator;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-public class StopwatchActivity extends AppCompatActivity implements View.OnClickListener {
+import com.example.testapplication.Fragments.FragmentSeconds;
+import com.example.testapplication.R;
 
-    private int second, minut;
-    private TextView tvSeconds, tvMinuts;
+public class StopwatchActivity extends AppCompatActivity {
+
     private LinearLayout myLL;
-    private String strMinut = "", strSecond = "", titleMinuts = "";
-    private boolean timerStoped = true;
-    private String backColor, SECONDS, MINUTS;
+    private String backColor;
     private SharedPreferences sPref;
     private SharedPreferences.Editor edit;
-    private BroadcastReceiver br;
-    public final static String CONNECTION_TO_TIMERSERVICE = "com.example.develop.stopwatch_timerservice";
     private String SAVED_COLOR, COLOR_SELECTED;
-
-
+    Fragment myFrag;
+    FragmentTransaction ft;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stopwatch);
-        tvSeconds = (TextView) findViewById(R.id.textviewSeconds);
-        tvMinuts = (TextView) findViewById(R.id.textviewMinuts);
-        strMinut = Integer.toString(minut);
-        strSecond = Integer.toString(second);
-        tvMinuts.setText("");
-        tvSeconds.setText("");
-        backColor = getString(R.string.color1);
+        backColor = "#FFFFFF";
         myLL = (LinearLayout) findViewById(R.id.stopwatchBckground);
-        titleMinuts = getString(R.string.minutsStr);
-        SAVED_COLOR = getString(R.string.SAVED_COLOR);
-        COLOR_SELECTED = getString(R.string.COLOR_SELECTED);
-        SECONDS = getString(R.string.SECONDS);
-        MINUTS = getString(R.string.MINUTS);
+        SAVED_COLOR = "back_color";
+        COLOR_SELECTED = "colorSelected";
         sPref = getPreferences(MODE_PRIVATE);
         edit = sPref.edit();
+
+        myFrag = new FragmentSeconds();
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fl_fragment, myFrag);
+        ft.commit();
 
         if (!((sPref.getString(SAVED_COLOR, "")).equals(""))) // если цвет у фона уже был выбран однажды, красим фон в него
             paintBackground(sPref.getString(SAVED_COLOR, "")); else {
@@ -56,22 +46,10 @@ public class StopwatchActivity extends AppCompatActivity implements View.OnClick
             edit.commit();                           // иначе, если приложение запущено первый раз, красим фон в белый
             paintBackground(backColor);
         }
-
-        br = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) { // действия при получении данных от сервиса
-                timerStoped = false;
-                second = intent.getIntExtra(SECONDS, 0);
-                minut = intent.getIntExtra(MINUTS, 0);
-                strMinut = Integer.toString(minut);
-                strSecond = Integer.toString(second);
-                tvMinuts.setText(titleMinuts + strMinut);
-                tvSeconds.setText(strSecond);
-            }
-        };
-        IntentFilter intFilt = new IntentFilter(CONNECTION_TO_TIMERSERVICE);
-        registerReceiver(br, intFilt);
     }
+
+    //-------------------------------------------------------------------------------------------------
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,16 +61,6 @@ public class StopwatchActivity extends AppCompatActivity implements View.OnClick
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id){
-            case R.id.secondsRestart:
-                if(timerStoped) {
-                    startService(new Intent(this, TimerService.class)); // запускаем сервис
-                    timerStoped = false;
-                }
-                return true;
-            case R.id.secondsStop:
-                stopService(new Intent(this, TimerService.class)); // останавливаем сервис
-                timerStoped = true;
-                return true;
             case R.id.secondsSettings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivityForResult(intent, 1);
@@ -108,28 +76,7 @@ public class StopwatchActivity extends AppCompatActivity implements View.OnClick
         changeBackColor(backColor);  // меняем цвет при возвращении с activity настроек
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(br); // выключение broadcastresiever
-    }
-
-    protected void onSaveInstanceState(Bundle outState) { // эти методы все-таки необходимо оставить
-        super.onSaveInstanceState(outState);
-        outState.putInt(SECONDS, second);
-        outState.putInt(MINUTS, minut);
-    }
-
-    protected void onRestoreInstanceState(Bundle savedInstanceState) { // эти методы все-таки необходимо оставить
-        super.onRestoreInstanceState(savedInstanceState);
-        second = savedInstanceState.getInt(SECONDS);
-        minut = savedInstanceState.getInt(MINUTS);
-    }
+    /*-------------- Методы работы с цветом фона ----------------------------------------------------------------------*/
 
     private void changeBackColor(String newBackColor) {
         String oldBackColor = sPref.getString(SAVED_COLOR, "");

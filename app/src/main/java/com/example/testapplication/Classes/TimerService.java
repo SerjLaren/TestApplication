@@ -1,18 +1,27 @@
-package com.example.testapplication;
+package com.example.testapplication.Classes;
 
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
+import com.example.testapplication.Activities.StopwatchActivity;
+import com.example.testapplication.Fragments.FragmentSeconds;
+import com.example.testapplication.R;
+
+import java.sql.Time;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TimerService extends Service {
 
-    private Intent intent = new Intent(StopwatchActivity.CONNECTION_TO_TIMERSERVICE);
+    private Intent intent = new Intent(FragmentSeconds.CONNECTION_TO_TIMERSERVICE);
     private Timer myTimer;
     private TimerTask myTimerTask;
     private int seconds = 0, minuts = 0;
@@ -23,10 +32,11 @@ public class TimerService extends Service {
     private int notifID = 24;
     private String SECONDS, MINUTS;
 
+
     public void onCreate() {
         super.onCreate();
-        SECONDS = getString(R.string.SECONDS);
-        MINUTS = getString(R.string.MINUTS);
+        SECONDS = "seconds";
+        MINUTS = "minuts";
         notifTitle = getString(R.string.notifTitle);
         titleMinNotif = getString(R.string.titleMinNotif);
         titleSecNotif = getString(R.string.titleSecNotif);
@@ -42,7 +52,7 @@ public class TimerService extends Service {
                 intent.putExtra(SECONDS, seconds);
                 intent.putExtra(MINUTS, minuts);
                 sendNotif();         // уведомление в "шторку"
-                sendBroadcast(intent);  // отправка текущих секунд и минут в StopwatchActivity
+                sendData();
             }
         };
     }
@@ -58,8 +68,8 @@ public class TimerService extends Service {
         notificationManager.cancel(notifID);
     }
 
-    public IBinder onBind(Intent intent) {
-        return null;
+    public IBinder onBind(Intent arg0) {
+        return  null;
     }
 
     void sendNotif() {
@@ -76,6 +86,10 @@ public class TimerService extends Service {
         notification.flags = Notification.FLAG_NO_CLEAR;
         notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(notifID, notification);
+    }
+
+    public void sendData () {
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
 }
