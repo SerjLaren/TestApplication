@@ -9,65 +9,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/settingsAct"
+    android:layout_marginTop="10dp"
     android:orientation="vertical">
-    <TextView
-        android:id="@+id/tvSetColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:layout_gravity="center"
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:layout_marginBottom="5dp"
         android:text="@string/setColor"
         android:textSize="25sp"
-        android:textStyle="bold" />
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/bckColor1"
-        android:textSize="25sp"
-        android:id="@+id/btnColor1"
+        android:id="@+id/btnColor"
+        android:textColor="@color/white"
         android:theme="@style/MyFragButton">
-    </Button>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/bckColor2"
-        android:textSize="25sp"
-        android:theme="@style/MyFragButton"
-        android:id="@+id/btnColor2">
-    </Button>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/bckColor3"
-        android:textSize="25sp"
-        android:id="@+id/btnColor3">
-    </Button>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/bckColor4"
-        android:textSize="25sp"
-        android:id="@+id/btnColor4">
-    </Button>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/bckColor5"
-        android:textSize="25sp"
-        android:id="@+id/btnColor5">
-    </Button>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/bckColor6"
-        android:textSize="25sp"
-        android:id="@+id/btnColor6">
     </Button>
 </LinearLayout>
 </ScrollView>

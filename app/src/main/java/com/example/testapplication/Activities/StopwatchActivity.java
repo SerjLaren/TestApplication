@@ -18,7 +18,7 @@ import com.example.testapplication.R;
 public class StopwatchActivity extends AppCompatActivity {
 
     private LinearLayout myLL;
-    private String backColor;
+    private int backColor;
     private SharedPreferences sPref;
     private SharedPreferences.Editor edit;
     private String SAVED_COLOR, COLOR_SELECTED;
@@ -28,7 +28,7 @@ public class StopwatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stopwatch);
-        backColor = "#FFFFFF";
+        backColor = Color.WHITE;
         myLL = (LinearLayout) findViewById(R.id.stopwatchBckground);
         SAVED_COLOR = "back_color";
         COLOR_SELECTED = "colorSelected";
@@ -40,9 +40,9 @@ public class StopwatchActivity extends AppCompatActivity {
         ft.replace(R.id.fl_fragment, myFrag);
         ft.commit();
 
-        if (!((sPref.getString(SAVED_COLOR, "")).equals(""))) // если цвет у фона уже был выбран однажды, красим фон в него
-            paintBackground(sPref.getString(SAVED_COLOR, "")); else {
-            edit.putString(SAVED_COLOR, backColor);
+        if (!(sPref.getInt(SAVED_COLOR, Color.WHITE) == Color.WHITE)) // если цвет у фона уже был выбран однажды, красим фон в него
+            paintBackground(sPref.getInt(SAVED_COLOR, Color.WHITE)); else {
+            edit.putInt(SAVED_COLOR, backColor);
             edit.commit();                           // иначе, если приложение запущено первый раз, красим фон в белый
             paintBackground(backColor);
         }
@@ -72,24 +72,24 @@ public class StopwatchActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
-        backColor = data.getStringExtra(COLOR_SELECTED); // получаем новый цвет от activity настроек
+        backColor = data.getIntExtra(COLOR_SELECTED, Color.WHITE); // получаем новый цвет от activity настроек
         changeBackColor(backColor);  // меняем цвет при возвращении с activity настроек
     }
 
     /*-------------- Методы работы с цветом фона ----------------------------------------------------------------------*/
 
-    private void changeBackColor(String newBackColor) {
-        String oldBackColor = sPref.getString(SAVED_COLOR, "");
-        if (!oldBackColor.equals(newBackColor)) { // если выбранный цвет фона отличный от текущего
+    private void changeBackColor(int newBackColor) {
+        int oldBackColor = sPref.getInt(SAVED_COLOR, Color.WHITE);
+        if (!(oldBackColor == newBackColor)) { // если выбранный цвет фона отличный от текущего
             paintBackground(newBackColor);          // красим фон в новый цвет
-            edit.putString(SAVED_COLOR, newBackColor); // и сохраняем выбранный цвет фона
+            edit.putInt(SAVED_COLOR, newBackColor); // и сохраняем выбранный цвет фона
             edit.commit();
         }
     }
 
-    private void paintBackground(String backColor) {
-        final int oldColor = Color.parseColor(sPref.getString(SAVED_COLOR, "")); // старый цвет фона
-        final int finalColor = Color.parseColor(backColor);  // новый цвет фона
+    private void paintBackground(int backColor) {
+        final int oldColor = sPref.getInt(SAVED_COLOR, Color.WHITE); // старый цвет фона
+        final int finalColor = backColor;  // новый цвет фона
 
         ValueAnimator anim = ValueAnimator.ofFloat(0, 1); // аниматор для смены цвета
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
