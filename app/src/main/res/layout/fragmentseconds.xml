@@ -7,7 +7,6 @@
     android:layout_marginBottom="10dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@android:drawable/dialog_holo_light_frame"
     tools:context="com.example.testapplication.Fragments.FragmentSeconds">
 
     <TextView
