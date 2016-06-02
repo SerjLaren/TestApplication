@@ -1,14 +1,10 @@
-package com.example.testapplication.Activities;
+package com.example.testapplication.activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.provider.Telephony;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.android.colorpicker.ColorPickerDialog;
 import com.android.colorpicker.ColorPickerSwatch;
@@ -19,12 +15,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private Button btnColor;
     private final static String COLOR_SELECTED = "colorSelected";
     public Intent returnIntent = new Intent();
-    private ColorPickerDialog colorPickerDialog;
+    ColorPickerDialog colorPickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings);
+        setContentView(R.layout.activity_settings);
         int[] colors = {getResources().getColor(R.color.white), getResources().getColor(R.color.pink), getResources().getColor(R.color.purple),
                 getResources().getColor(R.color.deep_purple), getResources().getColor(R.color.indigo), getResources().getColor(R.color.blue),
                 getResources().getColor(R.color.light_blue), getResources().getColor(R.color.cyan), getResources().getColor(R.color.teal),

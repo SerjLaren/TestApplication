@@ -1,4 +1,4 @@
-package com.example.testapplication.Activities;
+package com.example.testapplication.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.testapplication.R;
-import com.example.testapplication.Classes.TimerService;
+import com.example.testapplication.services.TimerService;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_main);
         String[] dataSpinner = {getString(R.string.step1), getString(R.string.step2), getString(R.string.step3)};
         Button btnGotoAct = (Button) findViewById(R.id.btnGotoAct);
         btnGotoAct.setOnClickListener(this);
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         spinnerAct.setPrompt("Title");
         spinnerAct.setSelection(0);
         spinnerAct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 positionInSpinner = position;
@@ -47,10 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnGotoAct:
-                if(positionInSpinner == 0)
-                {
+                if (positionInSpinner == 0) {
                   Intent intent = new Intent(this, StopwatchActivity.class);
-                    startActivity(intent);
+                  startActivity(intent);
                 }
                 break;
             default:
@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //stopService(new Intent(this, TimerService.class));
     }
 
 

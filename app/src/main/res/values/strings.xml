@@ -4,19 +4,29 @@
     <string name="step1">Секундомер</string>
     <string name="step2">другое...</string>
     <string name="step3">другое...</string>
+    <string name="tabSecTitle">Секундомер</string>
+    <string name="tabTimerTitle">Таймер</string>
     <string name="actionSettings">Settings</string>
     <string name="chooseAct">Выберите экран:</string>
     <string name="secondsStart">Cтарт</string>
     <string name="secondsStop">Стоп</string>
+    <string name="secondsGet">Отсечь</string>
     <string name="secondsSettings">Настройки</string>
     <string name="gotoAct">Перейти</string>
     <string name="title_activity_stopwatch">Stopwatch</string>
+    <string name="hoursStr">Часов:&#160;</string>
     <string name="minutsStr">Минут:&#160;</string>
     <string name="notifTitle">Секундомер запущен.</string>
-    <string name="titleMinNotif">Мин:&#160;</string>
+    <string name="notifTitleTimer">Таймер запущен.</string>
+    <string name="titleHourNotif">Час:&#160;</string>
+    <string name="titleMinNotif">&#160;Мин:&#160;</string>
     <string name="titleSecNotif">&#160;Сек:&#160;</string>
+    <string name="titleDisplayDone">Уведомление от таймера!</string>
+    <string name="notifTitleTimerDone">Готово!</string>
+    <string name="timerDone">Таймер завершил отсчет!</string>
     <string name="setColor">Сменить цвет фона</string>
     <string name="titleColor">Выберите цвет:</string>
+    <string name="setTimer">Выберите часы, минуты, секунды:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
