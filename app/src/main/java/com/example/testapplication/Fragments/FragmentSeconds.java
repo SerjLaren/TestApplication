@@ -148,35 +148,12 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
                 stopButton();
                 break;
             case R.id.btnGet:
-                if (!timerStoped) {
-                    String sm = String.valueOf(minut);
-                    String ss = String.valueOf(second);
-                    cv.put("minut", sm);
-                    cv.put("second", ss);
-                    long rowID = db.insert("mytable", null, cv);
-                    db = dbHelper.getReadableDatabase();
-                    c = db.query("mytable", null, null, null, null, null, null);
-                    c.moveToLast();
-                    data.add(c.getString(c.getColumnIndex("minut")) + " " + c.getString(c.getColumnIndex("second")));
-                    mAdapter.notifyItemInserted(data.size()); // не вставляет элемент
-                }
+                getButton();
                 break;
             default:
                 break;
         }
     }
-
-    /*private String[] getDataSet() {
-        String[] mDataSet = new String[c.getCount()];
-        int i = 0;
-        if (c.moveToFirst())
-        do {
-            mDataSet[i] = c.getString(c.getColumnIndex("minut")) + " " + c.getString(c.getColumnIndex("second"));
-            i++;
-        }
-        while (c.moveToNext());
-        return mDataSet;
-    }*/
 
     private void doList() {
         data = new ArrayList();
@@ -206,5 +183,20 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
         int clearCount = db.delete("mytable", null, null);
         data.clear();
         mAdapter.notifyItemRangeRemoved(0, c.getCount());
+    }
+
+    private void getButton() {
+        if (!timerStoped) {
+            String sm = String.valueOf(minut);
+            String ss = String.valueOf(second);
+            cv.put("minut", sm);
+            cv.put("second", ss);
+            long rowID = db.insert("mytable", null, cv);
+            db = dbHelper.getReadableDatabase();
+            c = db.query("mytable", null, null, null, null, null, null);
+            c.moveToLast();
+            data.add(c.getString(c.getColumnIndex("minut")) + " " + c.getString(c.getColumnIndex("second")));
+            mAdapter.notifyItemInserted(data.size()); // не вставляет элемент
+        }
     }
 }

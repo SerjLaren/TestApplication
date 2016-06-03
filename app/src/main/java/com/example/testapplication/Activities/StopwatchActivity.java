@@ -59,17 +59,6 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
         viewPager.setOffscreenPageLimit(fragments.size());
         PagerAdapter pAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(pAdapter);
-
-        /*fragS = new FragmentSeconds();
-        fragT = new FragmentTimer();
-        fragS = (FragmentSeconds) getSupportFragmentManager().findFragmentByTag(getFragmentTag(0));
-        fragT = (FragmentTimer) getSupportFragmentManager().findFragmentByTag(getFragmentTag(1));*/
-
-        /*находит фрагменты по тегам правильно, но публичные методы фрагмента не запускает*/
-
-        /*if (fragS != null)
-            fragS.startButton();*/ // не работает
-
         if (!(sPref.getInt(SAVED_COLOR, Color.WHITE) == Color.WHITE)) // если цвет у фона уже был выбран однажды, красим фон в него
             paintBackground(sPref.getInt(SAVED_COLOR, Color.WHITE)); else {
             edit.putInt(SAVED_COLOR, backColor);
@@ -109,8 +98,6 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
         FragmentTimer fragT = (FragmentTimer) fManagerS.findFragmentByTag(fragTimerTag);
         if(fragT != null)
             fragT.stopButton();
-        Toast.makeText(this, "Остановить таймер!",
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -119,8 +106,6 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
         FragmentSeconds fragS = (FragmentSeconds) fManagerT.findFragmentByTag(fragSecTag);
         if(fragS != null)
             fragS.stopButton();
-        Toast.makeText(this, "Остановить секундомер!",
-                Toast.LENGTH_SHORT).show();
     }
 
     private void changeBackColor(int newBackColor) {
