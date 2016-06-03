@@ -16,12 +16,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private ArrayList dataSet;
     public Context cont;
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView, sTextView;
+        public TextView sTextView;
 
         public ViewHolder(View v) {
             super(v);
-            this.mTextView = (TextView) v.findViewById(R.id.fs_lv_minut);
-            //sTextView = (TextView) v.findViewById(R.id.fs_lv_second);
+            sTextView = (TextView) v.findViewById(R.id.fs_lv_second);
         }
     }
 
@@ -50,7 +49,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.mTextView.setText(dataSet.get(position).toString());
+        holder.sTextView.setText(dataSet.get(position).toString());
 
     }
 

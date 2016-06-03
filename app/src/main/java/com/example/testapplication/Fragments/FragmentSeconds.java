@@ -15,6 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +46,11 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private Cursor c;
-    private String[] myDataset;
     private RecyclerView myRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList data;
+    private RecyclerView.ItemAnimator itemAnimator;
 
 
     @Override
@@ -65,15 +66,14 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
         dbHelper = new DatabaseHelper(getActivity());
         db = dbHelper.getWritableDatabase();
         c = db.query("mytable", null, null, null, null, null, null);
-
-        myDataset = getDataSet();
         doList();
         myRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         myRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new RecyclerAdapter(getActivity(), data);
         myRecyclerView.setAdapter(mAdapter);
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        myRecyclerView.setHasFixedSize(true);
+        itemAnimator = new DefaultItemAnimator();
         myRecyclerView.setItemAnimator(itemAnimator);
 
         buttonStart = (Button) v.findViewById(R.id.btnStart);
@@ -155,41 +155,19 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
                     cv.put("minut", sm);
                     cv.put("second", ss);
                     long rowID = db.insert("mytable", null, cv);
+                    db = dbHelper.getReadableDatabase();
                     c = db.query("mytable", null, null, null, null, null, null);
-                    doList();
+                    c.moveToLast();
+                    data.add(c.getString(c.getColumnIndex("minut")) + " " + c.getString(c.getColumnIndex("second")));
                     mAdapter.notifyItemInserted(data.size()); // не вставляет элемент
-                    mAdapter.notifyDataSetChanged();  // не обновляет
-                    //myRecyclerView.notifyAll();
-                    //mAdapter.notifyDataSetChanged();  // вставку элемента переделать, разобраться с recyclerview лучше
-                    //myDataset = getDataSet();
-                    //mAdapter.notifyDataSetChanged();
-                    /*mAdapter = new RecyclerAdapter(myDataset);
-                    myRecyclerView.setAdapter(mAdapter);
-                    mAdapter.notifyItemInserted(c.getCount());*/
                 }
-                /*c.requery();
-                c = db.query("mytable", null, null, null, null, null, null);
-                myDataset[c.getCount()] += sm + " " + ss;*/
-                //myDataset = getDataSet();
-                //mAdapter.notifyDataSetChanged();
-                //myRecyclerView.invalidateItemDecorations();
-                //myRecyclerView.setLayoutManager(mLayoutManager);
-                //mAdapter = new RecyclerAdapter(myDataset);
-                //myRecyclerView.setAdapter(mAdapter);
-                //mAdapter.notifyDataSetChanged();
-                //myRecyclerView.getAdapter().notifyDataSetChanged();
-                //mAdapter.notifyItemInserted(c.getCount());
-                /*c = db.query("mytable", null, null, null, null, null, null);
-                scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.fragment_seconds_lv_item, c, from, to);
-                lvSeconds.setAdapter(scAdapter);*/
-
                 break;
             default:
                 break;
         }
     }
 
-    private String[] getDataSet() {
+    /*private String[] getDataSet() {
         String[] mDataSet = new String[c.getCount()];
         int i = 0;
         if (c.moveToFirst())
@@ -199,13 +177,13 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
         }
         while (c.moveToNext());
         return mDataSet;
-    }
+    }*/
 
     private void doList() {
         data = new ArrayList();
         if (c.moveToFirst())
             do {
-                data.add(c.getString(c.getColumnIndex("second")));
+                data.add(c.getString(c.getColumnIndex("minut")) + " " + c.getString(c.getColumnIndex("second")));
             }
             while (c.moveToNext());
     }
