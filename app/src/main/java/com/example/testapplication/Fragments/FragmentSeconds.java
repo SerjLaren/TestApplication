@@ -128,9 +128,8 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
         return v;
     }
 
-    public interface OnFragmentInteractionListener { // интерфейс для передачи активности сообщения об остановке таймера
-
-        public void onFragmentInteraction(String link);
+    public interface OnFragmentSecStartListener { // интерфейс для передачи активности сообщения об остановке таймера
+        public void onFragmentSecStart();
     }
 
     @Override
@@ -188,8 +187,10 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
             while (c.moveToNext());
     }
 
-    public void startButton() {
+    private void startButton() {
         if (timerStoped) {
+            OnFragmentSecStartListener listener = (OnFragmentSecStartListener) getActivity();
+            listener.onFragmentSecStart();
             getActivity().startService(new Intent(getActivity(), SecondsService.class));
             edit.putBoolean(TIMER_STOPED, false);
             edit.commit();

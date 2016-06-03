@@ -112,8 +112,14 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
         }
     }
 
+    public interface OnFragmentTimerStartListener { // интерфейс для передачи активности сообщения об остановке таймера
+        public void onFragmentTimerStart();
+    }
+
     private void startButton() {
         if (timerStoped) {
+            OnFragmentTimerStartListener listener = (OnFragmentTimerStartListener) getActivity();
+            listener.onFragmentTimerStart();
             timerStoped = false;
             edit.putBoolean(TIMER_STOPED, false);
             edit.commit();

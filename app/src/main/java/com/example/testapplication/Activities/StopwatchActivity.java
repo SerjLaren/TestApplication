@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.testapplication.fragments.FragmentSeconds;
 import com.example.testapplication.R;
@@ -21,13 +22,13 @@ import com.example.testapplication.fragments.FragmentTimer;
 import java.util.List;
 import java.util.Vector;
 
-public class StopwatchActivity extends AppCompatActivity {
+public class StopwatchActivity extends AppCompatActivity implements FragmentSeconds.OnFragmentSecStartListener, FragmentTimer.OnFragmentTimerStartListener {
 
     private LinearLayout myLL;
     private int backColor;
     private SharedPreferences sPref;
     private SharedPreferences.Editor edit;
-    private String SAVED_COLOR, COLOR_SELECTED, tabSecTitle, tabTimerTitle;
+    private String SAVED_COLOR, COLOR_SELECTED, tabSecTitle, tabTimerTitle, fragSecTag, fragTimerTag;
     private FragmentSeconds myFragSec;
     private FragmentTimer myFragTimer;
     private Vector<Fragment> fragments;
@@ -45,6 +46,8 @@ public class StopwatchActivity extends AppCompatActivity {
         tabTimerTitle = getString(R.string.tabTimerTitle);
         sPref = getPreferences(MODE_PRIVATE);
         edit = sPref.edit();
+        fragSecTag = getFragmentTag(0);
+        fragTimerTag = getFragmentTag(1);
         tabSecTitle = getString(R.string.tabSecTitle);
         tabTimerTitle = getString(R.string.tabTimerTitle);
         myFragSec = new FragmentSeconds();
@@ -98,6 +101,26 @@ public class StopwatchActivity extends AppCompatActivity {
         if (data == null) {return;}
         backColor = data.getIntExtra(COLOR_SELECTED, Color.WHITE); // получаем новый цвет от activity настроек
         changeBackColor(backColor);  // меняем цвет при возвращении с activity настроек
+    }
+
+    @Override
+    public void onFragmentSecStart() {
+        FragmentManager fManagerS = getSupportFragmentManager();
+        FragmentTimer fragT = (FragmentTimer) fManagerS.findFragmentByTag(fragTimerTag);
+        if(fragT != null)
+            fragT.stopButton();
+        Toast.makeText(this, "Остановить таймер!",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFragmentTimerStart() {
+        FragmentManager fManagerT = getSupportFragmentManager();
+        FragmentSeconds fragS = (FragmentSeconds) fManagerT.findFragmentByTag(fragSecTag);
+        if(fragS != null)
+            fragS.stopButton();
+        Toast.makeText(this, "Остановить секундомер!",
+                Toast.LENGTH_SHORT).show();
     }
 
     private void changeBackColor(int newBackColor) {
