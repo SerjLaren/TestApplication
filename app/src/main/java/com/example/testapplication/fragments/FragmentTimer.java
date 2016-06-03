@@ -67,8 +67,13 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
             edit.putBoolean(TIMER_STOPED, true);
             edit.commit();
             timerStoped = true;
-        } else
+            btnStop.setPressed(true);
+            btnStart.setPressed(false);
+        } else {
             timerStoped = false;
+            btnStart.setPressed(true);
+            btnStop.setPressed(false);
+        }
 
         br = new BroadcastReceiver() {
             @Override
@@ -121,6 +126,8 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
             OnFragmentTimerStartListener listener = (OnFragmentTimerStartListener) getActivity();
             listener.onFragmentTimerStart();
             timerStoped = false;
+            btnStart.setPressed(true);
+            btnStop.setPressed(false);
             edit.putBoolean(TIMER_STOPED, false);
             edit.commit();
             timerIntent.putExtra(HOURS, npHour.getValue());
@@ -133,6 +140,8 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
     public void stopButton() {                   //нужно вызвать из активности
         getActivity().stopService(timerIntent);
         timerStoped = true;
+        btnStart.setPressed(false);
+        btnStop.setPressed(true);
         edit.putBoolean(TIMER_STOPED, true);
         edit.commit();
     }

@@ -172,11 +172,15 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
             edit.putBoolean(TIMER_STOPED, false);
             edit.commit();
             timerStoped = false;
+            buttonStart.setPressed(true);
+            buttonStop.setPressed(false);
         }
     }
 
     public void stopButton() {
         timerStoped = true;
+        buttonStart.setPressed(false);
+        buttonStop.setPressed(true);
         edit.putBoolean(TIMER_STOPED, true);
         edit.commit();
         getActivity().stopService(new Intent(getActivity(), SecondsService.class));

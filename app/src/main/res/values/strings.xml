@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TestApplication</string>
     <string name="hello_world">Hello world!</string>
-    <string name="step1">Секундомер</string>
+    <string name="step1">Секундомер, таймер</string>
     <string name="step2">другое...</string>
     <string name="step3">другое...</string>
     <string name="tabSecTitle">Секундомер</string>

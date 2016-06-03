@@ -96,7 +96,7 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
     public void onFragmentSecStart() {
         FragmentManager fManagerS = getSupportFragmentManager();
         FragmentTimer fragT = (FragmentTimer) fManagerS.findFragmentByTag(fragTimerTag);
-        if(fragT != null)
+        if (fragT != null)
             fragT.stopButton();
     }
 
@@ -104,7 +104,7 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
     public void onFragmentTimerStart() {
         FragmentManager fManagerT = getSupportFragmentManager();
         FragmentSeconds fragS = (FragmentSeconds) fManagerT.findFragmentByTag(fragSecTag);
-        if(fragS != null)
+        if (fragS != null)
             fragS.stopButton();
     }
 
@@ -167,7 +167,7 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position == 0)
+            if (position == 0)
                 return tabSecTitle;
             if (position == 1)
                 return tabTimerTitle;
