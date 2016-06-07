@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.testapplication.fragments.FragmentSeconds;
 import com.example.testapplication.R;
 import com.example.testapplication.fragments.FragmentTimer;
+import com.example.testapplication.helpers.SharedPreferencesHelper;
 
 import java.util.List;
 import java.util.Vector;
@@ -26,8 +27,7 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
 
     private LinearLayout myLL;
     private int backColor;
-    private SharedPreferences sPref;
-    private SharedPreferences.Editor edit;
+    private SharedPreferencesHelper sPrefs;
     private String SAVED_COLOR, COLOR_SELECTED, tabSecTitle, tabTimerTitle, fragSecTag, fragTimerTag;
     private FragmentSeconds myFragSec;
     private FragmentTimer myFragTimer;
@@ -44,8 +44,7 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
         COLOR_SELECTED = "colorSelected";
         tabSecTitle = getString(R.string.tabSecTitle);
         tabTimerTitle = getString(R.string.tabTimerTitle);
-        sPref = getPreferences(MODE_PRIVATE);
-        edit = sPref.edit();
+        sPrefs = new SharedPreferencesHelper(this);
         fragSecTag = getFragmentTag(0);
         fragTimerTag = getFragmentTag(1);
         tabSecTitle = getString(R.string.tabSecTitle);
@@ -59,10 +58,9 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
         viewPager.setOffscreenPageLimit(fragments.size());
         PagerAdapter pAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(pAdapter);
-        if (!(sPref.getInt(SAVED_COLOR, Color.WHITE) == Color.WHITE)) // если цвет у фона уже был выбран однажды, красим фон в него
-            paintBackground(sPref.getInt(SAVED_COLOR, Color.WHITE)); else {
-            edit.putInt(SAVED_COLOR, backColor);
-            edit.commit();                           // иначе, если приложение запущено первый раз, красим фон в белый
+        if (!(sPrefs.getSavedColor() == Color.WHITE)) // если цвет у фона уже был выбран однажды, красим фон в него
+            paintBackground(sPrefs.getSavedColor()); else {
+            sPrefs.putSavedColor(backColor);       // иначе, если приложение запущено первый раз, красим фон в белый
             paintBackground(backColor);
         }
     }
@@ -109,16 +107,15 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
     }
 
     private void changeBackColor(int newBackColor) {
-        int oldBackColor = sPref.getInt(SAVED_COLOR, Color.WHITE);
+        int oldBackColor = sPrefs.getSavedColor();
         if (!(oldBackColor == newBackColor)) { // если выбранный цвет фона отличный от текущего
             paintBackground(newBackColor);          // красим фон в новый цвет
-            edit.putInt(SAVED_COLOR, newBackColor); // и сохраняем выбранный цвет фона
-            edit.commit();
+            sPrefs.putSavedColor(newBackColor); // и сохраняем выбранный цвет фона
         }
     }
 
     private void paintBackground(int backColor) {
-        final int oldColor = (sPref.getInt(SAVED_COLOR, Color.WHITE)); // старый цвет фона
+        final int oldColor = sPrefs.getSavedColor(); // старый цвет фона
         final int finalColor = (backColor);  // новый цвет фона
 
         ValueAnimator anim = ValueAnimator.ofFloat(0, 1); // аниматор для смены цвета
