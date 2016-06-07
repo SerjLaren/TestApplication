@@ -74,6 +74,7 @@ public class FragmentSeconds extends Fragment implements View.OnClickListener{
         myRecyclerView.setAdapter(mAdapter);
         myRecyclerView.setHasFixedSize(true);
         itemAnimator = new DefaultItemAnimator();
+        itemAnimator.setAddDuration(500);
         myRecyclerView.setItemAnimator(itemAnimator);
 
         buttonStart = (Button) v.findViewById(R.id.btnStart);
