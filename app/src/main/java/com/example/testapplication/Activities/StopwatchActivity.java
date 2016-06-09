@@ -28,7 +28,8 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
     private LinearLayout myLL;
     private int backColor;
     private SharedPreferencesHelper sPrefs;
-    private String SAVED_COLOR, COLOR_SELECTED, tabSecTitle, tabTimerTitle, fragSecTag, fragTimerTag;
+    private final static String SAVED_COLOR = "back_color", COLOR_SELECTED = "colorSelected";
+    private String tabSecTitle, tabTimerTitle, fragSecTag, fragTimerTag;
     private FragmentSeconds myFragSec;
     private FragmentTimer myFragTimer;
     private Vector<Fragment> fragments;
@@ -40,8 +41,6 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
         setContentView(R.layout.activity_stopwatch);
         backColor = Color.WHITE;
         myLL = (LinearLayout) findViewById(R.id.stopwatchBckground);
-        SAVED_COLOR = "back_color";
-        COLOR_SELECTED = "colorSelected";
         tabSecTitle = getString(R.string.tabSecTitle);
         tabTimerTitle = getString(R.string.tabTimerTitle);
         sPrefs = new SharedPreferencesHelper(this);

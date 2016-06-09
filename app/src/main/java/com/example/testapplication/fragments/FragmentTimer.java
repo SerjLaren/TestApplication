@@ -26,7 +26,7 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
     public final static String CONNECTION_TO_TIMERSERVICET = "com.example.develop.fragment_timerservice";
     private boolean timerStoped = true;
     private Intent timerIntent;
-    private String SECONDS, MINUTS, HOURS, TIMER_STOPED = "timerStoped";
+    private final static String SECONDS = "seconds", MINUTS = "minuts", HOURS = "hours", TIMER_STOPED = "timerStoped";
     private SharedPreferences sPref;
     private SharedPreferences.Editor edit;
     private BroadcastReceiver br;
@@ -39,9 +39,6 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_timer, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        SECONDS = "seconds";
-        MINUTS = "minuts";
-        HOURS = "hours";
         titleHours = getString(R.string.hoursStr);
         titleMinuts = getString(R.string.minutsStr);
         tvHours = (TextView) v.findViewById(R.id.textviewHoursFRT);
