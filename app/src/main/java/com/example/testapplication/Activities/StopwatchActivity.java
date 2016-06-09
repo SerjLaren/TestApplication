@@ -2,7 +2,6 @@ package com.example.testapplication.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,25 +12,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.example.testapplication.fragments.FragmentSeconds;
+import com.example.testapplication.fragments.StopwatchFragment;
 import com.example.testapplication.R;
-import com.example.testapplication.fragments.FragmentTimer;
+import com.example.testapplication.fragments.TimerFragment;
 import com.example.testapplication.helpers.SharedPreferencesHelper;
 
 import java.util.List;
 import java.util.Vector;
 
-public class StopwatchActivity extends AppCompatActivity implements FragmentSeconds.OnFragmentSecStartListener, FragmentTimer.OnFragmentTimerStartListener {
+public class StopwatchActivity extends BaseActivity implements StopwatchFragment.OnFragmentStopwatchStartListener, TimerFragment.OnFragmentTimerStartListener {
 
     private LinearLayout myLL;
     private int backColor;
-    private SharedPreferencesHelper sPrefs;
-    private final static String SAVED_COLOR = "back_color", COLOR_SELECTED = "colorSelected";
-    private String tabSecTitle, tabTimerTitle, fragSecTag, fragTimerTag;
-    private FragmentSeconds myFragSec;
-    private FragmentTimer myFragTimer;
+    private SharedPreferencesHelper prefs;
+    private final static String COLOR_SELECTED = "colorSelected";
+    private String tabSecTitle, tabTimerTitle, fragStopwatchTag, fragTimerTag;
+    private StopwatchFragment myFragStopwatch;
+    private TimerFragment myFragTimer;
     private Vector<Fragment> fragments;
     private ViewPager viewPager;
 
@@ -39,29 +37,9 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
-        backColor = Color.WHITE;
-        myLL = (LinearLayout) findViewById(R.id.stopwatchBckground);
-        tabSecTitle = getString(R.string.tabSecTitle);
-        tabTimerTitle = getString(R.string.tabTimerTitle);
-        sPrefs = new SharedPreferencesHelper(this);
-        fragSecTag = getFragmentTag(0);
-        fragTimerTag = getFragmentTag(1);
-        tabSecTitle = getString(R.string.tabSecTitle);
-        tabTimerTitle = getString(R.string.tabTimerTitle);
-        myFragSec = new FragmentSeconds();
-        myFragTimer = new FragmentTimer();
-        fragments = new Vector<Fragment>();
-        fragments.add(Fragment.instantiate(this, myFragSec.getClass().getName()));
-        fragments.add(Fragment.instantiate(this, myFragTimer.getClass().getName()));
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(fragments.size());
-        PagerAdapter pAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
-        viewPager.setAdapter(pAdapter);
-        if (!(sPrefs.getSavedColor() == Color.WHITE)) // если цвет у фона уже был выбран однажды, красим фон в него
-            paintBackground(sPrefs.getSavedColor()); else {
-            sPrefs.putSavedColor(backColor);       // иначе, если приложение запущено первый раз, красим фон в белый
-            paintBackground(backColor);
-        }
+        initViews();
+        initValues();
+        initBackColor();
     }
 
     @Override
@@ -84,37 +62,39 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {return;}
+        if (data == null) return;
         backColor = data.getIntExtra(COLOR_SELECTED, Color.WHITE); // получаем новый цвет от activity настроек
         changeBackColor(backColor);  // меняем цвет при возвращении с activity настроек
     }
 
     @Override
-    public void onFragmentSecStart() {
+    public void onFragmentStopwatchStart() {
         FragmentManager fManagerS = getSupportFragmentManager();
-        FragmentTimer fragT = (FragmentTimer) fManagerS.findFragmentByTag(fragTimerTag);
-        if (fragT != null)
+        TimerFragment fragT = (TimerFragment) fManagerS.findFragmentByTag(fragTimerTag);
+        if (fragT != null) {
             fragT.stopButton();
+        }
     }
 
     @Override
     public void onFragmentTimerStart() {
         FragmentManager fManagerT = getSupportFragmentManager();
-        FragmentSeconds fragS = (FragmentSeconds) fManagerT.findFragmentByTag(fragSecTag);
-        if (fragS != null)
+        StopwatchFragment fragS = (StopwatchFragment) fManagerT.findFragmentByTag(fragStopwatchTag);
+        if (fragS != null) {
             fragS.stopButton();
+        }
     }
 
     private void changeBackColor(int newBackColor) {
-        int oldBackColor = sPrefs.getSavedColor();
+        int oldBackColor = prefs.getSavedColor();
         if (!(oldBackColor == newBackColor)) { // если выбранный цвет фона отличный от текущего
             paintBackground(newBackColor);          // красим фон в новый цвет
-            sPrefs.putSavedColor(newBackColor); // и сохраняем выбранный цвет фона
+            prefs.putSavedColor(newBackColor); // и сохраняем выбранный цвет фона
         }
     }
 
     private void paintBackground(int backColor) {
-        final int oldColor = sPrefs.getSavedColor(); // старый цвет фона
+        final int oldColor = prefs.getSavedColor(); // старый цвет фона
         final int finalColor = (backColor);  // новый цвет фона
 
         ValueAnimator anim = ValueAnimator.ofFloat(0, 1); // аниматор для смены цвета
@@ -163,13 +143,46 @@ public class StopwatchActivity extends AppCompatActivity implements FragmentSeco
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if (position == 0)
-                return tabSecTitle;
-            if (position == 1)
-                return tabTimerTitle;
+            if (position == 0) return tabSecTitle;
+            if (position == 1) return tabTimerTitle;
             return tabSecTitle;
         }
 
+    }
+
+    @Override
+    protected void initViews() {
+        myLL = (LinearLayout) findViewById(R.id.stopwatchBckground);
+        prefs = new SharedPreferencesHelper(this);
+        fragStopwatchTag = getFragmentTag(0);
+        fragTimerTag = getFragmentTag(1);
+        myFragStopwatch = new StopwatchFragment();
+        myFragTimer = new TimerFragment();
+        fragments = new Vector<Fragment>();
+        fragments.add(Fragment.instantiate(this, myFragStopwatch.getClass().getName()));
+        fragments.add(Fragment.instantiate(this, myFragTimer.getClass().getName()));
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setOffscreenPageLimit(fragments.size());
+        PagerAdapter pAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
+        viewPager.setAdapter(pAdapter);
+    }
+
+    @Override
+    protected void initValues() {
+        backColor = Color.WHITE;
+        tabSecTitle = getString(R.string.tabSecTitle);
+        tabTimerTitle = getString(R.string.tabTimerTitle);
+        tabSecTitle = getString(R.string.tabSecTitle);
+        tabTimerTitle = getString(R.string.tabTimerTitle);
+    }
+
+    private void initBackColor() {
+        if (!(prefs.getSavedColor() == Color.WHITE)) { // если цвет у фона уже был выбран однажды, красим фон в него
+            paintBackground(prefs.getSavedColor());
+        } else {
+            prefs.putSavedColor(backColor);       // иначе, если приложение запущено первый раз, красим фон в белый
+            paintBackground(backColor);
+        }
     }
 }
 

@@ -13,22 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.testapplication.R;
+import com.example.testapplication.helpers.MyNumberPicker;
+import com.example.testapplication.helpers.SharedPreferencesHelper;
 import com.example.testapplication.services.TimerService;
 
-public class FragmentTimer extends Fragment implements View.OnClickListener{
+public class TimerFragment extends Fragment implements View.OnClickListener{
 
-    private NumberPicker npHour, npMin, npSec;
+    private MyNumberPicker npHour, npMin, npSec;
     private Button btnStart, btnStop;
     public final static String CONNECTION_TO_TIMERSERVICET = "com.example.develop.fragment_timerservice";
     private boolean timerStoped = true;
     private Intent timerIntent;
     private final static String SECONDS = "seconds", MINUTS = "minuts", HOURS = "hours", TIMER_STOPED = "timerStoped";
-    private SharedPreferences sPref;
-    private SharedPreferences.Editor edit;
+    private SharedPreferencesHelper prefs;
     private BroadcastReceiver br;
     private int seconds = 0, minuts = 0, hours = 0;
     private String strSeconds = "", strMinuts = "", strHours = "", titleMinuts, titleHours;
@@ -39,64 +39,13 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_timer, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        titleHours = getString(R.string.hoursStr);
-        titleMinuts = getString(R.string.minutsStr);
-        tvHours = (TextView) v.findViewById(R.id.textviewHoursFRT);
-        tvMinuts = (TextView) v.findViewById(R.id.textviewMinutsFRT);
-        tvSeconds = (TextView) v.findViewById(R.id.textviewSecondsFRT);
-        npHour = (NumberPicker) v.findViewById(R.id.numberPickerHour);
-        npMin = (NumberPicker) v.findViewById(R.id.numberPickerMin);
-        npSec = (NumberPicker) v.findViewById(R.id.numberPickerSec);
-        btnStart = (Button) v.findViewById(R.id.btnStartTimer);
-        btnStop = (Button) v.findViewById(R.id.btnStopTimer);
-        btnStart.setOnClickListener(this);
-        btnStop.setOnClickListener(this);
-        npHour.setMinValue(0);
-        npHour.setMaxValue(23);
-        npMin.setMinValue(0);
-        npMin.setMaxValue(59);
-        npSec.setMinValue(0);
-        npSec.setMaxValue(59);
         timerIntent = new Intent(getActivity(), TimerService.class);
-        sPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        edit = sPref.edit();
-        if ((sPref.getBoolean(TIMER_STOPED, true))) {
-            edit.putBoolean(TIMER_STOPED, true);
-            edit.commit();
-            timerStoped = true;
-            btnStop.setPressed(true);
-            btnStart.setPressed(false);
-        } else {
-            timerStoped = false;
-            btnStart.setPressed(true);
-            btnStop.setPressed(false);
-        }
-
-        br = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) { // действия при получении данных от сервиса
-                timerStoped = false;
-                btnStart.setPressed(true);
-                btnStop.setPressed(false);
-                seconds = intent.getIntExtra(SECONDS, 0);
-                minuts = intent.getIntExtra(MINUTS, 0);
-                hours = intent.getIntExtra(HOURS, 0);
-                if (hours == 0 && minuts == 0 && seconds == 0) {
-                    edit.putBoolean(TIMER_STOPED, true);
-                    edit.commit();
-                    timerStoped = true;
-                }
-                strMinuts = Integer.toString(minuts);
-                strSeconds = Integer.toString(seconds);
-                strHours = Integer.toString(hours);
-                tvHours.setText(titleHours + strHours);
-                tvMinuts.setText(titleMinuts + strMinuts);
-                tvSeconds.setText(strSeconds);
-            }
-        };
+        prefs = new SharedPreferencesHelper(getActivity());
+        initViews(v);
+        initValues();
+        initReciever();
         IntentFilter intFilt = new IntentFilter(CONNECTION_TO_TIMERSERVICET);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(br, intFilt);
-
         return v;
     }
 
@@ -108,8 +57,6 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
                 break;
             case R.id.btnStopTimer:
                 stopButton();
-                break;
-            default:
                 break;
         }
     }
@@ -125,8 +72,7 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
             timerStoped = false;
             btnStart.setPressed(true);
             btnStop.setPressed(false);
-            edit.putBoolean(TIMER_STOPED, false);
-            edit.commit();
+            prefs.setTimerStopedFALSE(TIMER_STOPED);
             timerIntent.putExtra(HOURS, npHour.getValue());
             timerIntent.putExtra(MINUTS, npMin.getValue());
             timerIntent.putExtra(SECONDS, npSec.getValue());
@@ -139,7 +85,62 @@ public class FragmentTimer extends Fragment implements View.OnClickListener{
         timerStoped = true;
         btnStart.setPressed(false);
         btnStop.setPressed(true);
-        edit.putBoolean(TIMER_STOPED, true);
-        edit.commit();
+        prefs.setTimerStopedTRUE(TIMER_STOPED);
+    }
+
+    private void initViews(View v) {
+        tvHours = (TextView) v.findViewById(R.id.textviewHoursFRT);
+        tvMinuts = (TextView) v.findViewById(R.id.textviewMinutsFRT);
+        tvSeconds = (TextView) v.findViewById(R.id.textviewSecondsFRT);
+        npHour = (MyNumberPicker) v.findViewById(R.id.numberPickerHour);
+        npMin = (MyNumberPicker) v.findViewById(R.id.numberPickerMin);
+        npSec = (MyNumberPicker) v.findViewById(R.id.numberPickerSec);
+        btnStart = (Button) v.findViewById(R.id.btnStartTimer);
+        btnStop = (Button) v.findViewById(R.id.btnStopTimer);
+        btnStart.setOnClickListener(this);
+        btnStop.setOnClickListener(this);
+        initPressedButton();
+    }
+
+    private void initValues() {
+        titleHours = getString(R.string.hoursStr);
+        titleMinuts = getString(R.string.minutsStr);
+    }
+
+    private void initReciever() {
+        br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) { // действия при получении данных от сервиса
+                timerStoped = false;
+                btnStart.setPressed(true);
+                btnStop.setPressed(false);
+                seconds = intent.getIntExtra(SECONDS, 0);
+                minuts = intent.getIntExtra(MINUTS, 0);
+                hours = intent.getIntExtra(HOURS, 0);
+                if (hours == 0 && minuts == 0 && seconds == 0) {
+                    prefs.setTimerStopedTRUE(TIMER_STOPED);
+                    timerStoped = true;
+                }
+                strMinuts = Integer.toString(minuts);
+                strSeconds = Integer.toString(seconds);
+                strHours = Integer.toString(hours);
+                tvHours.setText(titleHours + strHours);
+                tvMinuts.setText(titleMinuts + strMinuts);
+                tvSeconds.setText(strSeconds);
+            }
+        };
+    }
+
+    private void initPressedButton() {
+        if (prefs.getTimerStoped(TIMER_STOPED)) {
+            prefs.setTimerStopedTRUE(TIMER_STOPED);
+            timerStoped = true;
+            btnStop.setPressed(true);
+            btnStart.setPressed(false);
+        } else {
+            timerStoped = false;
+            btnStart.setPressed(true);
+            btnStop.setPressed(false);
+        }
     }
 }

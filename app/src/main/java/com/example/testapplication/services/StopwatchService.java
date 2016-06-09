@@ -9,15 +9,15 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.testapplication.activities.StopwatchActivity;
-import com.example.testapplication.fragments.FragmentSeconds;
+import com.example.testapplication.fragments.StopwatchFragment;
 import com.example.testapplication.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SecondsService extends Service {
+public class StopwatchService extends Service {
 
-    private Intent intentSeconds = new Intent(FragmentSeconds.CONNECTION_TO_TIMERSERVICE);
+    private Intent intentSeconds = new Intent(StopwatchFragment.CONNECTION_TO_TIMERSERVICE);
     private Timer myTimer;
     private TimerTask myTimerTask;
     private int seconds = 0, minuts = 0;
@@ -26,13 +26,11 @@ public class SecondsService extends Service {
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private int notifID = 24;
-    private String SECONDS, MINUTS;
+    private final static String SECONDS = "seconds", MINUTS = "minuts";
 
 
     public void onCreate() {
         super.onCreate();
-        SECONDS = "seconds";
-        MINUTS = "minuts";
         notifTitle = getString(R.string.notifTitle);
         titleMinNotif = getString(R.string.titleMinNotif);
         titleSecNotif = getString(R.string.titleSecNotif);

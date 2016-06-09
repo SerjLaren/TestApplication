@@ -10,14 +10,14 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.testapplication.R;
 import com.example.testapplication.activities.StopwatchActivity;
-import com.example.testapplication.fragments.FragmentTimer;
+import com.example.testapplication.fragments.TimerFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TimerService extends Service {
 
-    private Intent intentTimer = new Intent(FragmentTimer.CONNECTION_TO_TIMERSERVICET);
+    private Intent intentTimer = new Intent(TimerFragment.CONNECTION_TO_TIMERSERVICET);
     private Timer myTimer;
     private TimerTask myTimerTask;
     private int seconds = 0, minuts = 0, hours = 0;

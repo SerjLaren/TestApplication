@@ -1,5 +1,6 @@
 package com.example.testapplication.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,24 +14,21 @@ import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
-public class SettingsActivity extends AppCompatActivity implements View.OnClickListener{
+public class SettingsActivity extends BaseActivity implements View.OnClickListener{
 
     private Button btnColor;
     private final static String COLOR_SELECTED = "colorSelected";
     private String titleColor, titleColorOK, titleColorCancel;
     public Intent returnIntent = new Intent();
-    ColorPickerDialogBuilder colorPickerDialog;
+    private ColorPickerDialogBuilder colorPickerDialog;
     private int colorSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        btnColor = (Button) findViewById(R.id.btnColor);
-        btnColor.setOnClickListener(this);
-        titleColor = getString(R.string.titleColor);
-        titleColorOK = getString(R.string.titleColorOK);
-        titleColorCancel = getString(R.string.titleColorCancel);
+        initViews();
+        initValues();
     }
 
     @Override
@@ -38,8 +36,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.btnColor:
                 buildColorPicker();
-                break;
-            default:
                 break;
         }
     }
@@ -71,4 +67,18 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 }).build().show();
     }
 
+    @Override
+    protected void initViews() {
+        super.initViews();
+        btnColor = (Button) findViewById(R.id.btnColor);
+        btnColor.setOnClickListener(this);
+    }
+
+    @Override
+    protected void initValues() {
+        super.initValues();
+        titleColor = getString(R.string.titleColor);
+        titleColorOK = getString(R.string.titleColorOK);
+        titleColorCancel = getString(R.string.titleColorCancel);
+    }
 }
