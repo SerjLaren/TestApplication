@@ -26,8 +26,6 @@
     <string name="timerDone">Таймер завершил отсчет!</string>
     <string name="setColor">Сменить цвет фона</string>
     <string name="titleColor">Выберите цвет:</string>
-    <string name="titleColorOK">Выбрать</string>
-    <string name="titleColorCancel">Отмена</string>
     <string name="setTimer">Выберите часы, минуты, секунды:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
