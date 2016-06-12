@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
+import com.example.testapplication.fragments.SavedTimersFragment;
 import com.example.testapplication.fragments.StopwatchFragment;
 import com.example.testapplication.R;
 import com.example.testapplication.fragments.TimerFragment;
@@ -32,6 +34,7 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
     private TimerFragment myFragTimer;
     private Vector<Fragment> fragments;
     private ViewPager viewPager;
+    FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,11 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
         if (fragS != null) {
             fragS.stopButton();
         }
+    }
+
+    @Override
+    public void showSavedTimers() {
+        SavedTimersFragment stFrag = new SavedTimersFragment();
     }
 
     private void changeBackColor(int newBackColor) {

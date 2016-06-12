@@ -26,14 +26,11 @@ public class TimerService extends Service {
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private int notifID = 25, notifDoneID = 26;
-    private String SECONDS, MINUTS, HOURS;
+    private final static String SECONDS = "seconds", MINUTS = "minuts", HOURS = "hours";
     boolean timerDone = true;
 
     public void onCreate() {
         super.onCreate();
-        SECONDS = "seconds";
-        MINUTS = "minuts";
-        HOURS = "hours";
         notifTitle = getString(R.string.notifTitleTimer);
         titleHourNotif = getString(R.string.titleHourNotif);
         titleMinNotif = getString(R.string.titleMinNotif);
@@ -65,8 +62,8 @@ public class TimerService extends Service {
                     seconds--;
                 }
                 intentTimer.putExtra(HOURS, hours);
-                intentTimer.putExtra(SECONDS, seconds);
                 intentTimer.putExtra(MINUTS, minuts);
+                intentTimer.putExtra(SECONDS, seconds);
                 sendData();
                 sendNotif(); // уведомление в "шторку"
                 if (timerDone) {

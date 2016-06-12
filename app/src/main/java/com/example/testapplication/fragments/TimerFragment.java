@@ -1,10 +1,13 @@
 package com.example.testapplication.fragments;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -14,25 +17,33 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.testapplication.R;
 import com.example.testapplication.helpers.MyNumberPicker;
 import com.example.testapplication.helpers.SharedPreferencesHelper;
+import com.example.testapplication.helpers.StopwatchDatabaseHelper;
+import com.example.testapplication.helpers.TimerDatabaseHelper;
 import com.example.testapplication.services.TimerService;
 
 public class TimerFragment extends Fragment implements View.OnClickListener{
 
     private MyNumberPicker npHour, npMin, npSec;
-    private Button btnStart, btnStop;
+    private Button btnStart, btnStop, btnTakeTime, btnShowTimers;
     public final static String CONNECTION_TO_TIMERSERVICET = "com.example.develop.fragment_timerservice";
     private boolean timerStoped = true;
     private Intent timerIntent;
     private final static String SECONDS = "seconds", MINUTS = "minuts", HOURS = "hours", TIMER_STOPED = "timerStoped";
+    private final static String SECONDS_DB = "second", MINUTS_DB = "minut", HOURS_DB = "hour", DB_NAME = "mytableTimer";
     private SharedPreferencesHelper prefs;
     private BroadcastReceiver br;
     private int seconds = 0, minuts = 0, hours = 0;
     private String strSeconds = "", strMinuts = "", strHours = "", titleMinuts, titleHours;
     private TextView tvHours, tvMinuts, tvSeconds;
+    private ContentValues cv;
+    private TimerDatabaseHelper dbHelper;
+    private SQLiteDatabase db;
+    private Cursor c;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +52,7 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         timerIntent = new Intent(getActivity(), TimerService.class);
         prefs = new SharedPreferencesHelper(getActivity());
+        initDB();
         initViews(v);
         initValues();
         initReciever();
@@ -58,11 +70,18 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
             case R.id.btnStopTimer:
                 stopButton();
                 break;
+            case R.id.btnTakeTimer:
+                takeTimeButton();
+                break;
+            case R.id.btnShowTimers:
+                showTimersButton();
+                break;
         }
     }
 
     public interface OnFragmentTimerStartListener { // интерфейс для передачи активности сообщения об остановке таймера
         public void onFragmentTimerStart();
+        public void showSavedTimers();
     }
 
     private void startButton() {
@@ -86,6 +105,31 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
         btnStart.setPressed(false);
         btnStop.setPressed(true);
         prefs.setTimerStopedTRUE(TIMER_STOPED);
+        int clearCount = db.delete(DB_NAME, null, null);
+    }
+
+    private void takeTimeButton() {
+        if ((!timerStoped) && (hours != 0 || minuts != 0 || seconds != 0)) {
+            String sh = String.valueOf(hours);
+            String sm = String.valueOf(minuts);
+            String ss = String.valueOf(seconds);
+            cv.put(HOURS_DB, sh);
+            cv.put(MINUTS_DB, sm);
+            cv.put(SECONDS_DB, ss);
+            long rowID = db.insert(DB_NAME, null, cv);
+            /*db = dbHelper.getReadableDatabase();
+            c = db.query(DB_NAME, null, null, null, null, null, null);
+            c.moveToLast();
+            String str = c.getString(c.getColumnIndex(HOURS_DB)) + " " + c.getString(c.getColumnIndex(MINUTS_DB)) + " " + c.getString(c.getColumnIndex(SECONDS_DB));
+            Toast toast = Toast.makeText(getActivity(),
+                    str, Toast.LENGTH_SHORT);
+            toast.show();*/
+        }
+    }
+
+    private void showTimersButton() {
+        OnFragmentTimerStartListener listener = (OnFragmentTimerStartListener) getActivity();
+        listener.showSavedTimers();
     }
 
     private void initViews(View v) {
@@ -97,14 +141,25 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
         npSec = (MyNumberPicker) v.findViewById(R.id.numberPickerSec);
         btnStart = (Button) v.findViewById(R.id.btnStartTimer);
         btnStop = (Button) v.findViewById(R.id.btnStopTimer);
+        btnTakeTime = (Button) v.findViewById(R.id.btnTakeTimer);
+        btnShowTimers = (Button) v.findViewById(R.id.btnShowTimers);
         btnStart.setOnClickListener(this);
         btnStop.setOnClickListener(this);
+        btnTakeTime.setOnClickListener(this);
+        btnShowTimers.setOnClickListener(this);
         initPressedButton();
     }
 
     private void initValues() {
         titleHours = getString(R.string.hoursStr);
         titleMinuts = getString(R.string.minutsStr);
+    }
+
+    private void initDB() {
+        cv = new ContentValues();
+        dbHelper = new TimerDatabaseHelper(getActivity());
+        db = dbHelper.getWritableDatabase();
+        c = db.query(DB_NAME, null, null, null, null, null, null);
     }
 
     private void initReciever() {

@@ -27,7 +27,7 @@
             android:name=".services.TimerService"
             android:enabled="true" />
 
-        <activity android:name=".activities.BaseActivity"></activity>
+        <activity android:name=".activities.BaseActivity" />
     </application>
 
 </manifest>

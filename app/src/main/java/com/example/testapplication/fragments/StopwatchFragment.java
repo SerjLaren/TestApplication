@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -21,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.testapplication.helpers.DatabaseHelper;
+import com.example.testapplication.helpers.StopwatchDatabaseHelper;
 import com.example.testapplication.adapters.RecyclerAdapter;
 import com.example.testapplication.helpers.SharedPreferencesHelper;
 import com.example.testapplication.services.StopwatchService;
@@ -39,10 +38,10 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener{
     private SharedPreferencesHelper prefs;
     private final static String SECONDS = "seconds", MINUTS = "minuts", TIMER_STOPED = "stopwatchStoped";
     public final static String CONNECTION_TO_TIMERSERVICE = "com.example.develop.fragment_secondsservice";
-    private final static String SECONDS_DB = "second", MINUTS_DB = "minut", DB_NAME = "mytable";
+    private final static String SECONDS_DB = "second", MINUTS_DB = "minut", DB_NAME = "mytableStopwatch";
     private Button buttonStart, buttonStop, buttonTakeTime;
     private ContentValues cv;
-    private DatabaseHelper dbHelper;
+    private StopwatchDatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private Cursor c;
     private RecyclerView myRecyclerView;
@@ -145,7 +144,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener{
 
     private void initDB() {
         cv = new ContentValues();
-        dbHelper = new DatabaseHelper(getActivity());
+        dbHelper = new StopwatchDatabaseHelper(getActivity());
         db = dbHelper.getWritableDatabase();
         c = db.query(DB_NAME, null, null, null, null, null, null);
         getAllFromDB();

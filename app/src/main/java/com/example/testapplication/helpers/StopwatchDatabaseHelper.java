@@ -8,20 +8,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by Сергей on 30.05.2016.
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class StopwatchDatabaseHelper extends SQLiteOpenHelper {
 
-    public DatabaseHelper(Context context) {
-        super(context, "myDB", null, 1);
+    public StopwatchDatabaseHelper(Context context) {
+        super(context, "myDBStopwatch", null, 1);
     }
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
-                          int version, DatabaseErrorHandler errorHandler) {
+    public StopwatchDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
+                                   int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table mytable ("
+        db.execSQL("create table mytableStopwatch ("
                 + "_id integer primary key autoincrement,"
                 + "minut text,"
                 + "second text" + ");");
