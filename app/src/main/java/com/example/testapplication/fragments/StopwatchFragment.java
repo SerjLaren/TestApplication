@@ -77,6 +77,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(!prefs.getSaveStopwatch()) {
+            int clearCount = db.delete(DB_NAME, null, null);
+            data.clear();
+            mAdapter.notifyItemRangeRemoved(0, c.getCount());
+        }
         dbHelper.close();
     }
 
@@ -99,7 +104,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener{
         data = new ArrayList();
         if (c.moveToFirst()) {
             do {
-                data.add(c.getString(c.getColumnIndex(MINUTS_DB)) + " " + c.getString(c.getColumnIndex(SECONDS_DB)));
+                data.add(getString(R.string.titleMinNotif) +  c.getString(c.getColumnIndex(MINUTS_DB)) + " " +
+                        getString(R.string.titleSecNotif) + c.getString(c.getColumnIndex(SECONDS_DB)));
             } while (c.moveToNext());
         }
     }
@@ -122,9 +128,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener{
         buttonStop.setPressed(true);
         prefs.setTimerStopedTRUE(TIMER_STOPED);
         getActivity().stopService(new Intent(getActivity(), StopwatchService.class));
-        int clearCount = db.delete(DB_NAME, null, null);
-        data.clear();
-        mAdapter.notifyItemRangeRemoved(0, c.getCount());
+        if(!prefs.getSaveStopwatch()) {
+            int clearCount = db.delete(DB_NAME, null, null);
+            data.clear();
+            mAdapter.notifyItemRangeRemoved(0, c.getCount());
+        }
     }
 
     private void takeTimeButton() {

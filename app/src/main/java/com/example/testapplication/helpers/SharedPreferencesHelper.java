@@ -3,15 +3,18 @@ package com.example.testapplication.helpers;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 
 public class SharedPreferencesHelper {
 
-    private final static String SAVED_COLOR = "back_color";
+    private final static String SAVED_COLOR = "back_color", SAVE_STOPWATCH = "saveStopwatch", SAVE_TIMER = "saveTimer";
     private SharedPreferences pref;
+    private SharedPreferences settingsPref;
     private SharedPreferences.Editor edit;
 
     public SharedPreferencesHelper(Activity ctx) {
         pref = ctx.getPreferences(ctx.MODE_PRIVATE);
+        settingsPref = PreferenceManager.getDefaultSharedPreferences(ctx);
         edit = pref.edit();
     }
 
@@ -36,5 +39,13 @@ public class SharedPreferencesHelper {
     public void setTimerStopedFALSE(String TIMER_STOPED) {
         edit.putBoolean(TIMER_STOPED, false);
         edit.commit();
+    }
+
+    public boolean getSaveStopwatch() {
+        return settingsPref.getBoolean(SAVE_STOPWATCH, true);
+    }
+
+    public boolean getSaveTimer() {
+        return settingsPref.getBoolean(SAVE_TIMER, true);
     }
 }

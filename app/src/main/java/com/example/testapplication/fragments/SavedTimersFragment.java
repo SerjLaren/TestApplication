@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.testapplication.R;
 import com.example.testapplication.adapters.RecyclerAdapter;
+import com.example.testapplication.helpers.SharedPreferencesHelper;
 import com.example.testapplication.helpers.StopwatchDatabaseHelper;
 import com.example.testapplication.helpers.TimerDatabaseHelper;
 
@@ -23,12 +24,14 @@ public class SavedTimersFragment extends Fragment {
 
     private ContentValues cv;
     private TimerDatabaseHelper dbHelper;
+    private SharedPreferencesHelper prefs;
     private SQLiteDatabase db;
     private Cursor c;
     private RecyclerView myRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList data;
+    private String noDataStr;
     private final static String SECONDS_DB = "second", MINUTS_DB = "minut", HOURS_DB = "hour", DB_NAME = "mytableTimer";
 
     @Override
@@ -40,6 +43,8 @@ public class SavedTimersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_saved_timers, container, false);
+        prefs = new SharedPreferencesHelper(getActivity());
+        noDataStr = getString(R.string.noDataStr);
         initDB();
         initViews(v);
         return v;
@@ -55,12 +60,15 @@ public class SavedTimersFragment extends Fragment {
 
     private void getAllFromDB() {
         data = new ArrayList();
-        if (c.moveToFirst()) {
+        if (c.moveToFirst() && prefs.getSaveTimer()) {
             do {
                 data.add(getString(R.string.titleHourNotif) + c.getString(c.getColumnIndex(HOURS_DB)) + " " +
                         getString(R.string.titleMinNotif) + c.getString(c.getColumnIndex(MINUTS_DB)) + " " +
                         getString(R.string.titleSecNotif) + c.getString(c.getColumnIndex(SECONDS_DB)));
             } while (c.moveToNext());
+        } else {
+            data.add(noDataStr);
+            int clearCount = db.delete(DB_NAME, null, null);
         }
     }
 

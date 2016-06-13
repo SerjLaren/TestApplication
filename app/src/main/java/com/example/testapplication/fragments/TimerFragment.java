@@ -62,6 +62,14 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(!prefs.getSaveTimer()) {
+            int clearCount = db.delete(DB_NAME, null, null);
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnStartTimer:
@@ -105,7 +113,9 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
         btnStart.setPressed(false);
         btnStop.setPressed(true);
         prefs.setTimerStopedTRUE(TIMER_STOPED);
-        int clearCount = db.delete(DB_NAME, null, null);
+        if(!prefs.getSaveTimer()) {
+            int clearCount = db.delete(DB_NAME, null, null);
+        }
     }
 
     private void takeTimeButton() {
@@ -117,13 +127,6 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
             cv.put(MINUTS_DB, sm);
             cv.put(SECONDS_DB, ss);
             long rowID = db.insert(DB_NAME, null, cv);
-            /*db = dbHelper.getReadableDatabase();
-            c = db.query(DB_NAME, null, null, null, null, null, null);
-            c.moveToLast();
-            String str = c.getString(c.getColumnIndex(HOURS_DB)) + " " + c.getString(c.getColumnIndex(MINUTS_DB)) + " " + c.getString(c.getColumnIndex(SECONDS_DB));
-            Toast toast = Toast.makeText(getActivity(),
-                    str, Toast.LENGTH_SHORT);
-            toast.show();*/
         }
     }
 

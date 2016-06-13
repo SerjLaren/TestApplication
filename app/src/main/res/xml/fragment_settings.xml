@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="saveStopwatch"
+        android:summary="@string/sStopwatchPrefSummary"
+        android:title="@string/sStopwatchPrefTitle"/>
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="saveTimer"
+        android:summary="@string/sTimerPrefSummary"
+        android:title="@string/sTimerPrefTitle"/>
+</PreferenceScreen>
