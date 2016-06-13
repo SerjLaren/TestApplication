@@ -12,6 +12,7 @@
     <string name="secondsStop">Стоп</string>
     <string name="secondsGet">Отсечь</string>
     <string name="timerTakeTime">Сохр.</string>
+    <string name="showSavedTimers">Сохраненные таймеры</string>
     <string name="secondsSettings">Настройки</string>
     <string name="gotoAct">Перейти</string>
     <string name="title_activity_stopwatch">Stopwatch</string>

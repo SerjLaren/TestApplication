@@ -137,7 +137,8 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener{
             db = dbHelper.getReadableDatabase();
             c = db.query(DB_NAME, null, null, null, null, null, null);
             c.moveToLast();
-            data.add(c.getString(c.getColumnIndex(MINUTS_DB)) + " " + c.getString(c.getColumnIndex(SECONDS_DB)));
+            data.add(getString(R.string.titleMinNotif) + c.getString(c.getColumnIndex(MINUTS_DB)) + " " +
+                    getString(R.string.titleSecNotif) + c.getString(c.getColumnIndex(SECONDS_DB)));
             mAdapter.notifyItemInserted(data.size());
         }
     }

@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cv_saved_timers"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="400dp"
     android:layout_gravity="center"
     android:layout_marginTop="5dp"
     android:layout_margin="2dp"

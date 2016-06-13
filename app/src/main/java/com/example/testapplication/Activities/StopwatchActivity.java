@@ -34,6 +34,8 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
     private TimerFragment myFragTimer;
     private Vector<Fragment> fragments;
     private ViewPager viewPager;
+    SavedTimersFragment stFrag;
+    FragmentManager fm;
     FragmentTransaction ft;
 
     @Override
@@ -90,7 +92,18 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
 
     @Override
     public void showSavedTimers() {
-        SavedTimersFragment stFrag = new SavedTimersFragment();
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+        if (stFrag != null) {
+            ft.remove(stFrag);
+            ft.commit();
+            stFrag = null;
+        } else {
+            stFrag = new SavedTimersFragment();
+            ft.add(R.id.fl_fragment_timer, stFrag);
+            ft.commit();
+        }
     }
 
     private void changeBackColor(int newBackColor) {
