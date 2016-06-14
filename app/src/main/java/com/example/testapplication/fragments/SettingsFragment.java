@@ -5,9 +5,6 @@ import android.preference.PreferenceFragment;
 
 import com.example.testapplication.R;
 
-/**
- * Created by Sergey on 13.06.2016.
- */
 public class SettingsFragment extends PreferenceFragment {
 
     @Override
