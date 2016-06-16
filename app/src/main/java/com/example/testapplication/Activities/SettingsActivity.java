@@ -18,7 +18,7 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 public class SettingsActivity extends BaseActivity implements View.OnClickListener{
 
-    private Button btnColor;
+    private Button btnColor, btnApi;
     private final static String COLOR_SELECTED = "colorSelected";
     private String titleColor, titleColorOK, titleColorCancel;
     public Intent returnIntent = new Intent();
@@ -38,6 +38,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.btnColor:
                 buildColorPicker();
+                break;
+            case R.id.btnOboobs:
+                showBoobsActivity();
                 break;
         }
     }
@@ -73,7 +76,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     protected void initViews() {
         super.initViews();
         btnColor = (Button) findViewById(R.id.btnColor);
+        btnApi = (Button) findViewById(R.id.btnOboobs);
         btnColor.setOnClickListener(this);
+        btnApi.setOnClickListener(this);
     }
 
     @Override
@@ -82,5 +87,10 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         titleColor = getString(R.string.titleColor);
         titleColorOK = getString(R.string.titleColorOK);
         titleColorCancel = getString(R.string.titleColorCancel);
+    }
+
+    private void showBoobsActivity() {
+        Intent intentApi = new Intent(this, ApiActivity.class);
+        startActivity(intentApi);
     }
 }

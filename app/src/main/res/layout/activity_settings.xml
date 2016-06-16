@@ -14,10 +14,22 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="70dp"
-            android:layout_marginBottom="5dp"
             android:text="@string/setColor"
             android:textSize="25sp"
             android:id="@+id/btnColor"
+            android:textColor="@color/white"
+            android:theme="@style/MyFragButton">
+        </Button>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:text="@string/oboobsBtnTitle"
+            android:textSize="25sp"
+            android:id="@+id/btnOboobs"
             android:textColor="@color/white"
             android:theme="@style/MyFragButton">
         </Button>

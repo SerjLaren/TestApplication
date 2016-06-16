@@ -18,6 +18,8 @@
     <string name="sStopwatchPrefSummary">Сохранение отсечек в базу данных</string>
     <string name="sTimerPrefTitle">Сохранять отсечки таймера</string>
     <string name="sTimerPrefSummary">Сохранение отсечек в базу данных</string>
+    <string name="oboobsBtnTitle">Фоны oboobs</string>
+    <string name="oboobsBtnSetBack">Установить фон</string>
     <string name="secondsSettings">Настройки</string>
     <string name="gotoAct">Перейти</string>
     <string name="title_activity_stopwatch">Stopwatch</string>
