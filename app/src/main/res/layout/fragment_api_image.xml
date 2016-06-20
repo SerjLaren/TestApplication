@@ -8,14 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/cv_api_image">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="КАРТИНКА!!!"/>
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tvApiImage"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btnSetBackImage"
+            android:height="70dp"
             android:layout_gravity="bottom"
             android:text="@string/oboobsBtnSetBack"
             android:textColor="@color/white"

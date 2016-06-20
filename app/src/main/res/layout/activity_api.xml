@@ -13,4 +13,11 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:scrollbarAlwaysDrawVerticalTrack="true"/>
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rvProgressBar"
+        android:indeterminate="true"
+        style="@android:style/Widget.Holo.ProgressBar"
+        android:layout_gravity="bottom"/>
 </FrameLayout>

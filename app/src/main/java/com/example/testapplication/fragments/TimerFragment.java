@@ -64,7 +64,7 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(!prefs.getSaveTimer()) {
+        if (!prefs.getSaveTimer()) {
             int clearCount = db.delete(DB_NAME, null, null);
         }
     }
@@ -113,7 +113,7 @@ public class TimerFragment extends Fragment implements View.OnClickListener{
         btnStart.setPressed(false);
         btnStop.setPressed(true);
         prefs.setTimerStopedTRUE(TIMER_STOPED);
-        if(!prefs.getSaveTimer()) {
+        if (!prefs.getSaveTimer()) {
             int clearCount = db.delete(DB_NAME, null, null);
         }
     }

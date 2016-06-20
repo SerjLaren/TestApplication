@@ -77,7 +77,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(!prefs.getSaveStopwatch()) {
+        if (!prefs.getSaveStopwatch()) {
             int clearCount = db.delete(DB_NAME, null, null);
             data.clear();
             mAdapter.notifyItemRangeRemoved(0, c.getCount());

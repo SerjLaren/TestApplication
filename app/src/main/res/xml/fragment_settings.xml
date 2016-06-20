@@ -13,4 +13,9 @@
         android:key="saveTimer"
         android:summary="@string/sTimerPrefSummary"
         android:title="@string/sTimerPrefTitle"/>
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="setBoobs"
+        android:summary="@string/setBoobsPrefSummary"
+        android:title="@string/setBoobsPrefTitle"/>
 </PreferenceScreen>

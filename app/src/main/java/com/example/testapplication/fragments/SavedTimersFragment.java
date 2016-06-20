@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 public class SavedTimersFragment extends Fragment {
 
-    private ContentValues cv;
     private TimerDatabaseHelper dbHelper;
     private SharedPreferencesHelper prefs;
     private SQLiteDatabase db;
@@ -51,7 +50,6 @@ public class SavedTimersFragment extends Fragment {
     }
 
     private void initDB() {
-        cv = new ContentValues();
         dbHelper = new TimerDatabaseHelper(getActivity());
         db = dbHelper.getWritableDatabase();
         c = db.query(DB_NAME, null, null, null, null, null, null);

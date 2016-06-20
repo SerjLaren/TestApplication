@@ -7,15 +7,17 @@ import android.preference.PreferenceManager;
 
 public class SharedPreferencesHelper {
 
-    private final static String SAVED_COLOR = "back_color", SAVE_STOPWATCH = "saveStopwatch", SAVE_TIMER = "saveTimer";
+    private final static String SAVED_COLOR = "back_color", SAVE_STOPWATCH = "saveStopwatch", SAVE_TIMER = "saveTimer",
+            BOOBS = "boobs", SET_BOOBS = "setBoobs";
     private SharedPreferences pref;
     private SharedPreferences settingsPref;
-    private SharedPreferences.Editor edit;
+    private SharedPreferences.Editor edit, editSettingsPref;
 
     public SharedPreferencesHelper(Activity ctx) {
         pref = ctx.getPreferences(ctx.MODE_PRIVATE);
         settingsPref = PreferenceManager.getDefaultSharedPreferences(ctx);
         edit = pref.edit();
+        editSettingsPref = settingsPref.edit();
     }
 
     public int getSavedColor() {
@@ -25,6 +27,15 @@ public class SharedPreferencesHelper {
     public void putSavedColor(int backColor) {
         edit.putInt(SAVED_COLOR, backColor);
         edit.commit();
+    }
+
+    public void putSavedOboobs(String boobsUrl) {
+        editSettingsPref.putString(BOOBS, boobsUrl);
+        editSettingsPref.commit();
+    }
+
+    public String getSavedOboobs() {
+        return settingsPref.getString(BOOBS, "");
     }
 
     public boolean getTimerStoped(String TIMER_STOPED) {
@@ -47,5 +58,9 @@ public class SharedPreferencesHelper {
 
     public boolean getSaveTimer() {
         return settingsPref.getBoolean(SAVE_TIMER, true);
+    }
+
+    public boolean getSetBoobsBack() {
+        return settingsPref.getBoolean(SET_BOOBS, true);
     }
 }

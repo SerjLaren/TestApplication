@@ -1,23 +1,29 @@
 package com.example.testapplication.activities;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.FrameLayout;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.testapplication.fragments.SavedTimersFragment;
 import com.example.testapplication.fragments.StopwatchFragment;
 import com.example.testapplication.R;
 import com.example.testapplication.fragments.TimerFragment;
+import com.example.testapplication.helpers.MySingleton;
 import com.example.testapplication.helpers.SharedPreferencesHelper;
 
 import java.util.List;
@@ -25,7 +31,7 @@ import java.util.Vector;
 
 public class StopwatchActivity extends BaseActivity implements StopwatchFragment.OnFragmentStopwatchStartListener, TimerFragment.OnFragmentTimerStartListener {
 
-    private LinearLayout myLL;
+    private FrameLayout myFL;
     private int backColor;
     private SharedPreferencesHelper prefs;
     private final static String COLOR_SELECTED = "colorSelected";
@@ -34,9 +40,11 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
     private TimerFragment myFragTimer;
     private Vector<Fragment> fragments;
     private ViewPager viewPager;
-    SavedTimersFragment stFrag;
-    FragmentManager fm;
-    FragmentTransaction ft;
+    private SavedTimersFragment stFrag;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
+    private NetworkImageView imageBack;
+    private ImageLoader mImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +78,9 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
         if (data == null) return;
         backColor = data.getIntExtra(COLOR_SELECTED, Color.WHITE); // получаем новый цвет от activity настроек
         changeBackColor(backColor);  // меняем цвет при возвращении с activity настроек
+        if (!prefs.getSetBoobsBack()) {
+            imageBack.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -124,7 +135,7 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
             public void onAnimationUpdate(ValueAnimator animation) {
                 float position = animation.getAnimatedFraction();
                 int blended = blendColors(oldColor, finalColor, position);  // смешиваем от старого к новому цвету
-                myLL.setBackgroundColor(blended);  // красим экран цветами
+                myFL.setBackgroundColor(blended);  // красим экран цветами
             }
         });
         anim.setDuration(3000);  // анимация 3 секунды
@@ -173,8 +184,13 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
 
     @Override
     protected void initViews() {
-        myLL = (LinearLayout) findViewById(R.id.stopwatchBckground);
+        imageBack = (NetworkImageView) findViewById(R.id.backBoobsImage);
+        mImageLoader = MySingleton.getInstance(this).getImageLoader();
         prefs = new SharedPreferencesHelper(this);
+        if (!(prefs.getSavedOboobs().equals("")) && (hasConnection(this)) && prefs.getSetBoobsBack()) {
+            imageBack.setImageUrl(prefs.getSavedOboobs(), mImageLoader);
+        }
+        myFL = (FrameLayout) findViewById(R.id.stopwatchBckground);
         fragStopwatchTag = getFragmentTag(0);
         fragTimerTag = getFragmentTag(1);
         myFragStopwatch = new StopwatchFragment();
@@ -204,6 +220,24 @@ public class StopwatchActivity extends BaseActivity implements StopwatchFragment
             prefs.putSavedColor(backColor);       // иначе, если приложение запущено первый раз, красим фон в белый
             paintBackground(backColor);
         }
+    }
+
+    public static boolean hasConnection(final Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        wifiInfo = cm.getActiveNetworkInfo();
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }
 
