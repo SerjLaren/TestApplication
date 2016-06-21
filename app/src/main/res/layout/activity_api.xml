@@ -7,6 +7,16 @@
     android:id="@+id/fl_api_rv"
     tools:context="com.example.testapplication.activities.ApiActivity"
     android:orientation="vertical">
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/topProgressBar"
+        style="@android:style/Widget.Holo.ProgressBar"
+        android:indeterminate="true"
+        android:visibility="visible"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorPrimary"
+        android:layout_gravity="top"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_oboobs"
         android:layout_width="match_parent"
@@ -17,7 +27,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rvProgressBar"
-        android:indeterminate="true"
         style="@android:style/Widget.Holo.ProgressBar"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorPrimary"
         android:layout_gravity="bottom"/>
 </FrameLayout>

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -50,7 +51,7 @@ public class ApiActivity extends BaseActivity implements RecyclerApiAdapter.onRV
     private Cache cache;
     private Network network;
     private Toast toast;
-    private ProgressBar progressLoading;
+    private ProgressBar progressLoading, progressTop;
     private static final String POSITION = "position", BOOBS_COUNT = "boobsCount", COUNT = "count", PREVIEW = "preview", baseUrl = "http://api.oboobs.ru/boobs/";
 
     @Override
@@ -59,7 +60,7 @@ public class ApiActivity extends BaseActivity implements RecyclerApiAdapter.onRV
         setContentView(R.layout.activity_api);
         initValues();
         initViews();
-
+        progressTop.setVisibility(View.VISIBLE);
         if (hasConnection(this)) {
             workWithRV();
         } else {
@@ -73,7 +74,9 @@ public class ApiActivity extends BaseActivity implements RecyclerApiAdapter.onRV
     protected void initViews() {
         myRecyclerView = (RecyclerView) findViewById(R.id.rv_oboobs);
         progressLoading = (ProgressBar) findViewById(R.id.rvProgressBar);
-        progressLoading.setVisibility(ProgressBar.INVISIBLE);
+        progressLoading.setVisibility(View.INVISIBLE);
+        progressTop = (ProgressBar) findViewById(R.id.topProgressBar);
+        progressTop.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -138,18 +141,19 @@ public class ApiActivity extends BaseActivity implements RecyclerApiAdapter.onRV
                         nNext += 50;
                     }
                     if (loadingImages) {
-                        progressLoading.setVisibility(ProgressBar.VISIBLE);
                         url = baseUrl + nLast + "/" + nNext + "/";  //грузим элементы с nLast по nNext с сайта
                         JsonArrayRequest jsNewImagesReq = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray imagesJson) {
                                 try {
                                     for (i = 0; i < (nNext - nLast); i++) {
+                                        progressLoading.setVisibility(View.VISIBLE);
                                         objJson = imagesJson.getJSONObject(i);
                                         boobsImage = objJson.getString(PREVIEW);
                                         data.add(boobsImage);
                                         myAdapter.notifyDataSetChanged();
                                     }
+                                    progressLoading.setVisibility(View.INVISIBLE);
                                 } catch (JSONException e) {
                                     toast = Toast.makeText(getApplicationContext(),
                                             errorMsg, Toast.LENGTH_LONG);
@@ -165,24 +169,24 @@ public class ApiActivity extends BaseActivity implements RecyclerApiAdapter.onRV
                             }
                         });
                         queue.add(jsNewImagesReq);
-                        progressLoading.setVisibility(ProgressBar.INVISIBLE);
                     }
                 }
             }
         });
 
         url = baseUrl + nLast + "/" + nNext + "/";
-        progressLoading.setVisibility(ProgressBar.VISIBLE);
         JsonArrayRequest jsImagesReq = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse (JSONArray imagesJson) {
                 try {
                     for (i = 0; i < (nNext - nLast); i++) {
+                        progressTop.setVisibility(View.VISIBLE);
                         objJson = imagesJson.getJSONObject(i);
                         boobsImage = objJson.getString(PREVIEW);
                         data.add(boobsImage);
                         myAdapter.notifyDataSetChanged();
                     }
+                    progressTop.setVisibility(View.INVISIBLE);
                 } catch (JSONException e) {
                     toast = Toast.makeText(getApplicationContext(),
                             errorMsg, Toast.LENGTH_LONG);
@@ -199,7 +203,6 @@ public class ApiActivity extends BaseActivity implements RecyclerApiAdapter.onRV
         });
         queue.add(jsObjReq);
         queue.add(jsImagesReq);
-        progressLoading.setVisibility(ProgressBar.INVISIBLE);
     }
 
     @Override

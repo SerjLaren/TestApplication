@@ -2,27 +2,29 @@ package com.example.testapplication.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PointF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.testapplication.R;
 import com.example.testapplication.activities.StopwatchActivity;
 import com.example.testapplication.helpers.MySingleton;
 import com.example.testapplication.helpers.SharedPreferencesHelper;
+import com.example.testapplication.helpers.MyNetworkImageView;
 
 public class ApiImageFragment extends Fragment implements View.OnClickListener {
 
     private Button btnSetBack;
-    private NetworkImageView tvApiImage;
+    private MyNetworkImageView tvApiImage;
     private String position;
     private final static String url = "http://media.oboobs.ru/", POSITION = "position";
     private ImageLoader mImageLoader;
@@ -30,6 +32,7 @@ public class ApiImageFragment extends Fragment implements View.OnClickListener {
     private String backDone;
     private Toast toast;
     private String noConnectMsg;
+    private View v;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class ApiImageFragment extends Fragment implements View.OnClickListener {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_api_image, container, false);
+        v = inflater.inflate(R.layout.fragment_api_image, container, false);
         initValues();
         initViews(v);
         return v;
@@ -70,7 +73,7 @@ public class ApiImageFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initViews(View v) {
-        tvApiImage = (NetworkImageView) v.findViewById(R.id.tvApiImage);
+        tvApiImage = (MyNetworkImageView) v.findViewById(R.id.tvApiImage);
         btnSetBack = (Button) v.findViewById(R.id.btnSetBackImage);
         btnSetBack.setOnClickListener(this);
         if (prefs.getSetBoobsBack()) {
