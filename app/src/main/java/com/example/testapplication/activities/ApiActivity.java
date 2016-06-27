@@ -141,13 +141,13 @@ public class ApiActivity extends BaseActivity implements RecyclerApiAdapter.onRV
                         nNext += 50;
                     }
                     if (loadingImages) {
+                        progressLoading.setVisibility(View.VISIBLE);
                         url = baseUrl + nLast + "/" + nNext + "/";  //грузим элементы с nLast по nNext с сайта
                         JsonArrayRequest jsNewImagesReq = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray imagesJson) {
                                 try {
                                     for (i = 0; i < (nNext - nLast); i++) {
-                                        progressLoading.setVisibility(View.VISIBLE);
                                         objJson = imagesJson.getJSONObject(i);
                                         boobsImage = objJson.getString(PREVIEW);
                                         data.add(boobsImage);
